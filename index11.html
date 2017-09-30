@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.js"></script>
+    <script>
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(400, 300);
+    document.getElementById("app").appendChild(renderer.domElement);
+    renderer.setClearColor(0x000000);
+
+
+    var scene = new THREE.Scene();
+    //var camera=new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,1000);
+    
+
+    var axes = new THREE.AxisHelper(20); //空间辅助线大小
+    scene.add(axes);
+    
+    var camera = new THREE.OrthographicCamera(-1, 3, 1.5, -1.5, 1, 10);
+    camera.position.set(4,-3,5);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+    scene.add(camera);
+
+    var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true }));
+    scene.add(cube);
+
+    renderer.render(scene, camera);
+    </script>
+</body>
+
+</html>

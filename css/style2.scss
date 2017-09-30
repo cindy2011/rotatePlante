@@ -1,0 +1,54 @@
+$img-src: "../img/";
+@function cRem($n) {
+    @return $n/100*1rem;
+}
+@mixin wandh($w, $h) {
+    width: cRem($w);
+    height: cRem($h);
+}
+@mixin bg($bg) {
+    background:url(#{$img-src}#{$bg}) center 0 no-repeat;
+    background-size: 100% auto;
+}
+@mixin whbg($w, $h, $bg) {
+    width: cRem($w);
+    height: cRem($h);
+    background:url(#{$img-src}#{$bg}) center 0 no-repeat;
+    background-size: 100% auto;
+}
+@mixin pos($l, $t) {
+    position: absolute;
+    left: cRem($l);
+    top: cRem($t);
+}
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+    background: #0c0604 url(../img/bg_loading.jpg) no-repeat center;
+    background-size: cover;
+}
+#universe {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+#planets{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+.title {
+    @include whbg(676, 324, 'title.png');
+    margin: cRem(67) auto;
+}

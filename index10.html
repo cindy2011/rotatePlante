@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <div id="stats"></div>
+    <script src="js/three.r79.min.js"></script>
+    <script src="//cdn.bootcss.com/stats.js/r17/Stats.js"></script>
+    <script src="//cdn.bootcss.com/dat-gui/0.6.5/dat.gui.min.js"></script>
+    <script>
+    function initStats() {
+        var stats = new Stats();
+        stats.setMode(0);
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = "0px";
+        stats.domElement.style.top = "0px";
+        document.getElementById("stats").appendChild(stats.domElement);
+        return stats;
+    }
+    var stats = initStats();
+
+    var controls = new function() {
+        this.rotationSpeed = 0.02;
+        this.bouncingSpeed = 0.03;
+    }
+    var gui = new dat.GUI();
+    gui.add(controls, 'rotationSpeed', 0, 0.5);
+    gui.add(controls, 'bouncingSpeed', 0, 0.5);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer();
+
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMapSoft = true;
+
+    var axes = new THREE.AxisHelper(20); //空间辅助线大小
+    scene.add(axes);
+
+    var planeGeometry = new THREE.PlaneGeometry(60, 20);
+    var planeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
+    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    plane.receiveShadow = true;
+    plane.rotation.x = -0.5 * Math.PI;
+    plane.position.x = 10;
+    plane.position.y = 0;
+    plane.position.z = 0;
+    scene.add(plane);
+    var cubeGeometry = new THREE.CubeGeometry(4, 4, 4);
+    var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    cube.position.x = 2;
+    cube.position.y = 2;
+    cube.position.z = 2;
+    cube.castShadow = true;
+    scene.add(cube);
+    var geometry = new THREE.SphereGeometry(3, 20, 20);
+    var material = new THREE.MeshPhongMaterial({ map: new THREE.TextureLoader().load('img/earth4.jpg') });
+    var earthMesh = new THREE.Mesh(geometry, material);
+    earthMesh.position.set(20, 4, 2);
+    earthMesh.castShadow = true;
+    scene.add(earthMesh);
+
+    var spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(-40, 60, -10);
+
+    spotLight.castShadow = true;
+    spotLight.shadow.mapSize.width = 7000; //shadowMapWidth 决定多少像素渲染阴影，如果阴影边缘有锯齿可以增加这个值 
+    spotLight.shadow.mapSize.height = 7000; //shadowMapHeight 决定多少像素渲染阴影，如果阴影边缘有锯齿可以增加这个值
+    var helper = new THREE.CameraHelper(spotLight.shadow.camera);//打开阴影照相机
+    scene.add(helper);
+    scene.add(spotLight);
+
+    camera.position.x = -30;
+    camera.position.y = 40;
+    camera.position.z = 30;
+    camera.lookAt(scene.position);
+    document.getElementById("app").appendChild(renderer.domElement);
+
+    var step = 0;
+    render();
+
+    function render() {
+        stats.update();
+        step += controls.bouncingSpeed;
+        earthMesh.position.x = 20 + (10 * Math.cos(step));
+        earthMesh.position.y = 2 + (10 * Math.abs(Math.sin(step)));
+        console.log()
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
+    </script>
+</body>
+
+</html>
