@@ -41,7 +41,7 @@ function initStar() {
     window.addEventListener('resize', handleWindowResize, false); //监控当窗口改变大小时
     addStarts(); //创建星星 
     for (var i = 0; i < nbPlanetsMax; i++) { //创建星球
-        new Planet((-2000 / nbPlanetsMax * i - 500), i);
+        new Planet((-3000 / nbPlanetsMax * i - 500), i);
     }
     loop(); //轮换播放动画
 }
@@ -74,7 +74,7 @@ function animateStars(z) {
         if (star.position.z > z) {
             star.position.z -= 2000;
         } else {
-            star.position.z += 3;
+            star.position.z += 1.5;
         };
     }
 }
@@ -94,7 +94,7 @@ function animatePlanets() {
         } else {
             planet.position.z += (planetsTarget[i] - planet.position.z) / 100;
         };
-        planet.rotation.y += 0.001 * (i + 1);
+        planet.rotation.y += 0.003 * (i + 1);
 
     }
 }
